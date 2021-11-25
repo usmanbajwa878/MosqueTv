@@ -135,27 +135,46 @@ export const getTimeDifference = serverTime => {
 
   }
 
-  export const getCurrentPrayer = (timings,inLoopPrayer) =>{
-    let differenceTimeArray = [];
-    let differenceArray = []
-    let currentPrayer;
-    console.log("timing",timings)
-    timings.map((item,index)=>{
-      if(index < 5){
-        differenceTimeArray.push({diff:{hourDiff:getTimeDifferencePrayer(item.time).Hourdiff,minuteDiff:getTimeDifferencePrayer(item.time).minuteDiff},name:item.name})
+  // export const getCurrentPrayer = (timings) =>{
+    //   let differenceTimeArray = [];
+    //   let differenceArray = []
+    //   console.log("timing",timings)
+    //   timings.map((item,index)=>{
+    //     if(index < 5){
+    //       differenceTimeArray.push({diff:getTimeDifferencePrayer(item.time),name:item.name})
+    //     }
+    //   });
+    //   const sortedArray = differenceTimeArray.sort((a,b)=>a.diff-b.diff);
+    //   console.log("sorted",sortedArray)
+    //   const currentPrayer = sortedArray[0];
+    //   return currentPrayer;
+  
+    // }
+  
+  
+    export const getCurrentPrayer = (timings,inLoopPrayer) =>{
+      let differenceTimeArray = [];
+      let differenceArray = []
+      let currentPrayer;
+      console.log("timing",timings)
+      timings.map((item,index)=>{
+        if(index < 5){
+          differenceTimeArray.push({diff:{hourDiff:getTimeDifferencePrayer(item.time).Hourdiff,minuteDiff:getTimeDifferencePrayer(item.time).minuteDiff},name:item.name})
+        }
+      });
+      const sortedArray = differenceTimeArray.sort((a,b)=>a.diff.hourDiff-b.diff.hourDiff);
+      console.log("sorted",sortedArray);
+      if(inLoopPrayer &&  inLoopPrayer?.name === sortedArray[0].name){
+        currentPrayer = sortedArray[1]
+      }else {
+         currentPrayer = sortedArray[0];
       }
-    });
-    const sortedArray = differenceTimeArray.sort((a,b)=>a.diff.hourDiff-b.diff.hourDiff);
-    console.log("sorted",sortedArray);
-    if(inLoopPrayer?.name === sortedArray[0].name){
-      currentPrayer = sortedArray[1]
-    }else {
-       currentPrayer = sortedArray[0];
+  
+      return currentPrayer;
+  
     }
-
-    return currentPrayer;
-
-  }
+  
+  
 
 
 

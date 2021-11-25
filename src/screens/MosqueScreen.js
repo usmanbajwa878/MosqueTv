@@ -33,7 +33,7 @@ export const MosqueScreen = () => {
   const interval = React.useRef();
 
   useEffect(() => {
-    let data = getCurrentPrayer(selectedItem.timings);
+    let data = getCurrentPrayer(selectedItem.timings,nextPrayer);
     setNextPrayer(data)
     setHours(data.diff.hourDiff-1);
     setMinutes(data.diff.minuteDiff-1);
