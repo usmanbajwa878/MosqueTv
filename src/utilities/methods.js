@@ -53,50 +53,62 @@ export const shareHandler = (item) =>{
 
 }
 
-export const getTimeDifference = serverTime => {
+// export const getTimeDifference = serverTime => {
 
- const isAm = serverTime.split(' ')[1] === 'am' ? true : false
- console.log("FOR ",serverTime)
-    let newTime = serverTime.split(':')[0];
-    newTime = newTime.split('0')[1]
-    console.log("NEW TIME",newTime)
-    let today = new Date();
-    let totalTimeLeft = 0;
-    const currentTimeSpan = today.toLocaleString('en-US', { hour: 'numeric', hourCycle: "h24" }).split(' ')[1];
-    console.log("CURRENT TME SPAN",currentTimeSpan)
-   console.log("FOR ",newTime)
-    if(currentTimeSpan === 'AM'){
-        let h = today.getHours();
-        const hourDifference = 12 - h;
-        if(isAm){
-            console.log("INSIDE FIRST")
-            totalTimeLeft = hourDifference + parseInt(newTime) + 12;
-        }else{
-            console.log("INSIDE SECOND")
-            totalTimeLeft = hourDifference + parseInt(newTime)
-        }
+//  const isAm = serverTime.split(' ')[1] === 'am' ? true : false
+//  console.log("FOR ",serverTime)
+//     let newTime = serverTime.split(':')[0];
+//     newTime = newTime.split('0')[1]
+//     console.log("NEW TIME",newTime)
+//     let today = new Date();
+//     let totalTimeLeft = 0;
+//     const currentTimeSpan = today.toLocaleString('en-US', { hour: 'numeric', hourCycle: "h24" }).split(' ')[1];
+//     console.log("CURRENT TME SPAN",currentTimeSpan)
+//    console.log("FOR ",newTime)
+//     if(currentTimeSpan === 'AM'){
+//         let h = today.getHours();
+//         const hourDifference = 12 - h;
+//         if(isAm){
+//             console.log("INSIDE FIRST")
+//             totalTimeLeft = hourDifference + parseInt(newTime) + 12;
+//         }else{
+//             console.log("INSIDE SECOND")
+//             totalTimeLeft = hourDifference + parseInt(newTime)
+//         }
         
-    }else {
+//     }else {
 
-        let h = today.getHours();
+//         let h = today.getHours();
 
-       h =  today.toLocaleString('en-US', { hour: 'numeric'}).split(' ')[0];
-       console.log("current",h)
-       const hourDifference = 12 - h;
-        console.log("HOUR DIFF",hourDifference)
-        if(isAm){
+//        h =  today.toLocaleString('en-US', { hour: 'numeric'}).split(' ')[0];
+//        console.log("current",h)
+//        const hourDifference = 12 - h;
+//         console.log("HOUR DIFF",hourDifference)
+//         if(isAm){
            
-            totalTimeLeft = hourDifference + parseInt(newTime)
-            console.log("INSIDE THIRD",totalTimeLeft,hourDifference,newTime)
-        }else{
+//             totalTimeLeft = hourDifference + parseInt(newTime)
+//             console.log("INSIDE THIRD",totalTimeLeft,hourDifference,newTime)
+//         }else{
             
-            totalTimeLeft = hourDifference + parseInt(newTime) + 12
+//             totalTimeLeft = hourDifference + parseInt(newTime) + 12
        
-        }
-    }  
-    return totalTimeLeft;
-  };
+//         }
+//     }  
+//     return totalTimeLeft;
+//   };
   
+export const getTimeDifference = (severTime) =>{
+
+  let prayerHour24Format = convertFrom12To24Format(severTime).split(':')[0];
+  let currentHours = new Date().getHours();//current Time in 24 hour format
+  let Hourdiff = 0;
+    if(parseInt(currentHours) >= parseInt(prayerHour24Format) ){ //17 22
+      Hourdiff = (24 - parseInt(currentHours)) + parseInt(prayerHour24Format)
+    }else {
+      Hourdiff = parseInt(prayerHour24Format) - parseInt(currentHours)
+    }
+    return Hourdiff
+}
   
   export const getDistance = (lat1,lng1,lat2,lng2) =>{
    const distance = geolib.getDistance({latitude:lat1,longitude:lng1},{latitude:lat2,longitude:lng2});
@@ -181,11 +193,12 @@ export const getTimeDifference = serverTime => {
 
 export const convertFrom24To12Format = (time24) => {
   const number = moment(time24, ["HH:mm"]).format("hh:mm a");
+  console.log("time conversion from 24 to 12 from ",time24,number)
   return number;
 }
 export const convertFrom12To24Format = (time12) => {
   const number = moment(time12, ["hh:mm a"]).format("HH:mm");
-
+  console.log("time conversion from 12 to 24 from ",time12,number)
   return number;
 }
   
